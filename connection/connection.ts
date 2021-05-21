@@ -263,6 +263,7 @@ export class Connection {
     if (await this.serverAcceptsTLS()) {
       try {
         if ("startTls" in Deno) {
+          // weird
           this.#conn = await Deno.connectTls({ hostname, certFile, port });
         } else {
           throw new Error(
