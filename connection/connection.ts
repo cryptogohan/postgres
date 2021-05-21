@@ -256,7 +256,6 @@ export class Connection {
 
     this.#conn = await Deno.connect({ port, hostname });
     this.#bufWriter = new BufWriter(this.#conn);
-    this.#conn = await Deno.startTls(this.#conn, { hostname, certFile });
 
     /**
      * https://www.postgresql.org/docs/13/protocol-flow.html#id-1.10.5.7.11
