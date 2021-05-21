@@ -264,7 +264,7 @@ export class Connection {
       try {
         if ("startTls" in Deno) {
           // weird
-          this.#conn = await Deno.connectTls({ hostname, certFile, port });
+          this.#conn = await Deno.startTls(this.#conn, { hostname, certFile });
         } else {
           throw new Error(
             "You need to execute Deno with the `--unstable` argument in order to stablish a TLS connection",
