@@ -254,11 +254,7 @@ export class Connection {
       },
     } = this.connParams;
 
-    if (enforceTLS) {
-      this.#conn = await Deno.connectTls({ port, hostname, certFile });
-    } else {
-      this.#conn = await Deno.connect({ port, hostname });
-    }
+    this.#conn = await Deno.connect({ port, hostname });
     this.#bufWriter = new BufWriter(this.#conn);
 
     /**
