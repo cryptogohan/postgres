@@ -43,6 +43,7 @@ export interface TLSOptions {
    * default: `false`
    * */
   enforce: boolean;
+  certFile?: string;
 }
 
 export interface ConnectionOptions {

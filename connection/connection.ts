@@ -250,6 +250,7 @@ export class Connection {
       port,
       tls: {
         enforce: enforceTLS,
+        certFile,
       },
     } = this.connParams;
 
@@ -263,7 +264,7 @@ export class Connection {
       try {
         if ("startTls" in Deno) {
           // @ts-ignore This API should be available on unstable
-          this.#conn = await Deno.startTls(this.#conn, { hostname });
+          this.#conn = await Deno.startTls(this.#conn, { hostname, certFile });
         } else {
           throw new Error(
             "You need to execute Deno with the `--unstable` argument in order to stablish a TLS connection",
