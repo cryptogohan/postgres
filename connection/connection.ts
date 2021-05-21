@@ -297,6 +297,8 @@ export class Connection {
       // deno-lint-ignore camelcase
       const startup_response = await this.sendStartupMessage();
       assertSuccessfulStartup(startup_response);
+      this.#conn = await Deno.startTls(this.#conn, { hostname, certFile });
+      this.#bufWriter = new BufWriter(this.#conn);
       await this.authenticate(startup_response);
 
       // Handle connection status
