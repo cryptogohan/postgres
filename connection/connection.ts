@@ -250,6 +250,7 @@ export class Connection {
       port,
       tls: {
         enforce: enforceTLS,
+        attemptUpgrade,
       },
     } = this.connParams;
 
@@ -259,7 +260,7 @@ export class Connection {
     /**
      * https://www.postgresql.org/docs/13/protocol-flow.html#id-1.10.5.7.11
      * */
-    if (await this.serverAcceptsTLS()) {
+    if (await this.serverAcceptsTLS() && attemptUpgrade) {
       try {
         if ("startTls" in Deno) {
           // @ts-ignore This API should be available on unstable
@@ -283,6 +284,8 @@ export class Connection {
         }
       }
       this.#bufWriter = new BufWriter(this.#conn);
+    } else if (!attemptUpgrade) {
+      this.#conn = await Deno.connect({ port, hostname });
     } else if (enforceTLS) {
       throw new Error(
         "The server isn't accepting TLS connections. Change the client configuration so TLS configuration isn't required to connect",

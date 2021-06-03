@@ -43,6 +43,7 @@ export interface TLSOptions {
    * default: `false`
    * */
   enforce: boolean;
+  attemptUpgrade: boolean;
 }
 
 export interface ConnectionOptions {
@@ -136,7 +137,7 @@ function parseOptionsFromDsn(connString: string): ConnectionOptions {
 
   return {
     ...dsn,
-    tls: { enforce: enforceTls },
+    tls: { enforce: enforceTls, attemptUpgrade: true },
     applicationName: dsn.params.application_name,
   };
 }
@@ -147,6 +148,7 @@ const DEFAULT_OPTIONS = {
   port: "5432",
   tls: {
     enforce: false,
+    attemptUpgrade: true,
   },
 };
 
@@ -191,6 +193,8 @@ export function createParams(
     port,
     tls: {
       enforce: !!params?.tls?.enforce ?? DEFAULT_OPTIONS.tls.enforce,
+      attemptUpgrade: !!params?.tls?.attemptUpgrade ??
+        DEFAULT_OPTIONS.tls.attemptUpgrade,
     },
     user: params.user ?? pgEnv.user,
   };
